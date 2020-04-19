@@ -40,6 +40,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+//jwt
+app.set("secretKey", "cfsmTest"); // jwt secret token
 
 //* https://miso4202-back.herokuapp.com
 
@@ -53,7 +55,7 @@ require("./routes/api/insumo")(router);
 require("./routes/api/producto")(router);
 require("./routes/api/proveedor")(router);
 require("./routes/api/insumo")(router);
-require("./routes/api/login")(router);
+require("./routes/api/user")(router);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -70,7 +72,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-
-
 
 module.exports = app;

@@ -8,22 +8,18 @@ app.set("key", key.pass);
 
 const protected = express.Router();
 protected.use((req, res, next) => {
-  const token = req.headers["access-token"];
-
-  if (token) {
-    jwt.verify(token, app.get("key"), (err, decoded) => {
-      if (err) {
-        return res.json({ mensaje: "Token inválida" });
-      } else {
-        req.decoded = decoded;
-        next();
-      }
-    });
-  } else {
-    res.send({
-      mensaje: "Token no proveída.",
-    });
-  }
+  jwt.verify(req.headers["access-token"], req.app.get("secretKey"), function (
+    err,
+    decoded
+  ) {
+    if (err) {
+      res.json({ status: "error", message: err.message, data: null });
+    } else {
+      // add user id to request
+      req.body.userId = decoded.id;
+      next();
+    }
+  });
 });
 
 module.exports = {

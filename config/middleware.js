@@ -1,10 +1,5 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const app = express();
-const key = require(".././config/jwt");
-
-//Key JWT
-app.set("key", key.pass);
 
 const protected = express.Router();
 protected.use((req, res, next) => {

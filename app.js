@@ -12,6 +12,8 @@ const mongoose = require("mongoose");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 
+const key = require("./config/jwt");
+
 // Connect to database
 mongoose.connect(config.database, {
   useNewUrlParser: true,
@@ -41,7 +43,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 //jwt
-app.set("secretKey", "cfsmTest"); // jwt secret token
+app.set("secretKey", key.pass); // jwt secret token
 
 //* https://miso4202-back.herokuapp.com
 

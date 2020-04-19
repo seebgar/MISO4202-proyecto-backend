@@ -25,8 +25,12 @@ exports.create = function (req, res, next) {
 
 exports.authenticate = function (req, res, next) {
   userModel.findOne({ email: req.body.email }, function (err, userInfo) {
-    if (err) {
-      next(err);
+    if (!userInfo) {
+      res.status(401).json({
+        status: "error",
+        message: "Invalid email/password!!!",
+        data: null,
+      });
     } else {
       if (bcrypt.compareSync(req.body.password, userInfo.password)) {
         const token = jwt.sign({ id: userInfo._id }, req.app.get("secretKey"), {
@@ -38,7 +42,7 @@ exports.authenticate = function (req, res, next) {
           data: { user: userInfo, token: token },
         });
       } else {
-        res.status(400).json({
+        res.status(401).json({
           status: "error",
           message: "Invalid email/password!!!",
           data: null,

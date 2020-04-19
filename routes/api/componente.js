@@ -1,13 +1,19 @@
 const ComponenteController = require("../../controllers/componente.controller");
+const route = require("../../config/middleware");
 
 module.exports = function (router) {
-  router.post("/componente", ComponenteController.create);
-  router.get("/componente", ComponenteController.getAll);
+  router.post("/componente", route.protected, ComponenteController.create);
+  router.get("/componente", route.protected, ComponenteController.getAll);
   router.get(
     "/componente/subcomponente/:subcomponente",
+    route.protected,
     ComponenteController.getAllBySubcomponente
   );
-  router.get("/componente/:id", ComponenteController.get);
-  router.put("/componente/:id", ComponenteController.update);
-  router.delete("/componente/:id", ComponenteController.delete);
+  router.get("/componente/:id", route.protected, ComponenteController.get);
+  router.put("/componente/:id", route.protected, ComponenteController.update);
+  router.delete(
+    "/componente/:id",
+    route.protected,
+    ComponenteController.delete
+  );
 };

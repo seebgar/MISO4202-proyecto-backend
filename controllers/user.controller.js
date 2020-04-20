@@ -51,3 +51,15 @@ exports.authenticate = function (req, res, next) {
     }
   });
 };
+
+exports.list = function (req, res, next) {
+  userModel.find(function (err, response) {
+    if (err) next(err);
+    else
+      res.json({
+        status: "success",
+        message: "User added successfully!!!",
+        data: response,
+      });
+  });
+};

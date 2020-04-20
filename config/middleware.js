@@ -8,7 +8,9 @@ protected.use((req, res, next) => {
     decoded
   ) {
     if (err) {
-      res.json({ status: "error", message: err.message, data: null });
+      res
+        .status(401)
+        .json({ status: "error", message: err.message, data: null });
     } else {
       // add user id to request
       req.body.userId = decoded.id;

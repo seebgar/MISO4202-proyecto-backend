@@ -20,6 +20,11 @@ const UserSchema = mongoose.Schema({
     trim: true,
     required: true,
   },
+  role: {
+    type: String,
+    trim: true,
+    required: true,
+  },
 });
 
 // hash user password before saving into database

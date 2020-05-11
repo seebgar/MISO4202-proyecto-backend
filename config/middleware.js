@@ -1,5 +1,6 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const role = require("./role");
 
 const protected = express.Router();
 protected.use((req, res, next) => {
@@ -12,9 +13,20 @@ protected.use((req, res, next) => {
         .status(401)
         .json({ status: "error", message: err.message, data: null });
     } else {
-      // add user id to request
-      req.body.userId = decoded.id;
-      next();
+      if (
+        role[decoded.role].find(function (url) {
+          return req.path.match(url);
+        })
+      ) {
+        req.body.userId = decoded.id;
+        next();
+      } else {
+        res.status(401).json({
+          status: "error",
+          message: "No tiene permisos para consumir este recurso",
+          data: null,
+        });
+      }
     }
   });
 });

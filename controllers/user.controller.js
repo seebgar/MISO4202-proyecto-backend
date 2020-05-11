@@ -10,6 +10,7 @@ exports.create = function (req, res, next) {
       name: req.body.name,
       email: req.body.email,
       password: req.body.password,
+      role: req.body.role,
     },
     function (err, result) {
       if (err) next(err);
@@ -33,9 +34,13 @@ exports.authenticate = function (req, res, next) {
       });
     } else {
       if (bcrypt.compareSync(req.body.password, userInfo.password)) {
-        const token = jwt.sign({ id: userInfo._id }, req.app.get("secretKey"), {
-          expiresIn: "1h",
-        });
+        const token = jwt.sign(
+          { id: userInfo._id, role: userInfo.role },
+          req.app.get("secretKey"),
+          {
+            expiresIn: "1h",
+          }
+        );
         res.json({
           status: "success",
           message: "user found!!!",
